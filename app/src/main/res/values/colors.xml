@@ -6,4 +6,12 @@
 	<color name="tabIndicatorColor">#FF4081</color>
 	<color name="appTabTextColor">#c0f7f8</color>
 	<color name="appTabTextSelectedColor">#40ff50</color>
+
+	<color name="btnBorderColor">#565656</color>
+	<color name="btnBgColor">#d5f8f9</color>
+	<color name="btnBgPressedColor">#80c4f1</color>
+	<color name="toolbarBottomColor">#dddddd</color>
+
+	<color name="splitterColor">#c0c0c0</color>
+
 </resources>

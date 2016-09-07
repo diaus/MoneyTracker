@@ -3,4 +3,10 @@
 	<string name="tab_title_blotter">Blotter</string>
 	<string name="tab_title_accounts">Accounts</string>
 	<string name="tab_title_products">Products</string>
+	<string name="product_title">Product</string>
+	<string name="sum_title">Sum</string>
+	<string name="button_save_title">Save</string>
+	<string name="button_save_and_new"><![CDATA[Save & New]]></string>
+	<string name="button_cancel_title">Cancel</string>
+	<string name="dialog_select_account_title">Select Account</string>
 </resources>

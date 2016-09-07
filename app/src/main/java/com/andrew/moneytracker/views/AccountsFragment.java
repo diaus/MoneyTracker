@@ -14,6 +14,7 @@ import com.andrew.moneytracker.commons.SimpleListAdapter;
 import com.andrew.moneytracker.commons.SimpleListView;
 import com.andrew.moneytracker.commons.ISimpleViewHolder;
 import com.andrew.moneytracker.database.Account;
+import com.andrew.moneytracker.utils.dbHelper;
 
 /**
  * Created by andrew on 07.09.2016.
@@ -29,7 +30,7 @@ public class AccountsFragment extends MainTabFragment {
 
 		SimpleListView listAccounts = (SimpleListView) v.findViewById(R.id.accounts_list);
 
-		listAccounts.setAdapter(new SimpleListAdapter<>(accountDao().queryBuilder().list(), new IFactory<ISimpleViewHolder>() {
+		listAccounts.setAdapter(new SimpleListAdapter<>(dbHelper.accountsList(accountDao()), new IFactory<ISimpleViewHolder>() {
 					  @Override
 					  public ISimpleViewHolder create() {
 						  return new AccountViewHolder();

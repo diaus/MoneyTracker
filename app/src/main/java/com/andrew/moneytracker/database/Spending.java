@@ -22,12 +22,15 @@ public class Spending {
 	@NotNull
 	private int cash;
 
-	@Generated(hash = 1351924817)
-	public Spending(Long id, long productId, long accountId, int cash) {
+	private String notes;
+
+	@Generated(hash = 148746419)
+	public Spending(Long id, long productId, long accountId, int cash, String notes) {
 		this.id = id;
 		this.productId = productId;
 		this.accountId = accountId;
 		this.cash = cash;
+		this.notes = notes;
 	}
 
 	@Generated(hash = 2056300050)
@@ -64,5 +67,21 @@ public class Spending {
 
 	public void setCash(int cash) {
 		this.cash = cash;
+	}
+
+	public String getNotes() {
+		return this.notes;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
+
+	public int getCashBig() {
+		return getCash() / 100;
+	}
+
+	public int getCashSmall() {
+		return getCash() % 100;
 	}
 }
