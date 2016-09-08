@@ -128,11 +128,11 @@ public class SpendingFragment extends Fragment {
 				account = accountDao.queryBuilder().limit(1).unique();
 				mAccountId = account != null ? account.getId() : null;
 			} else {
-				Spending spending = spendingDao.load(spendingId);
+				Spending spending = spendingDao.loadDeep(spendingId);
 				mDate = spending.getDate();
 				mAccountId = spending.getAccountId();
-				editProduct.setText(productDao.load(spending.getProductId()).getName());
-				editNotes.setText(productDao.load(spending.getProductId()).getName());
+				editProduct.setText(spending.getProduct().getName());
+				editNotes.setText(spending.getNotes());
 				editSumBig.setText("" + spending.getCashBig());
 				int sumSmall = spending.getCashSmall();
 				if (sumSmall > 0) {
