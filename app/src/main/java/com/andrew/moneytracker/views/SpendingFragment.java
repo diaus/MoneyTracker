@@ -1,6 +1,7 @@
 package com.andrew.moneytracker.views;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -11,8 +12,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andrew.moneytracker.App;
@@ -26,6 +31,8 @@ import com.andrew.moneytracker.database.Spending;
 import com.andrew.moneytracker.database.SpendingDao;
 import com.andrew.moneytracker.utils.dbHelper;
 import com.andrew.moneytracker.utils.helper;
+
+import java.util.List;
 
 /**
  * Created by andrew on 07.09.2016.
@@ -49,7 +56,7 @@ public class SpendingFragment extends Fragment {
 
 	Button btnSave, btnCancel, btnSaveAndNew;
 	Button btnAccount;
-	EditText editProduct;
+	AutoCompleteTextView editProduct;
 	EditText editNotes;
 	EditText editSumBig, editSumSmall;
 
@@ -94,7 +101,7 @@ public class SpendingFragment extends Fragment {
 		btnSave = (Button) v.findViewById(R.id.button_save);
 		btnSaveAndNew = (Button) v.findViewById(R.id.button_save_and_new);
 		btnAccount = (Button) v.findViewById(R.id.button_account);
-		editProduct = (EditText) v.findViewById(R.id.product);
+		editProduct = (AutoCompleteTextView) v.findViewById(R.id.product);
 		editNotes = (EditText) v.findViewById(R.id.notes);
 		editSumBig = (EditText) v.findViewById(R.id.sum_big);
 		editSumSmall = (EditText) v.findViewById(R.id.sum_small);
@@ -155,6 +162,9 @@ public class SpendingFragment extends Fragment {
 			}
 		});
 
+		editProduct.setAdapter(new ProductSearchAdapter(getContext()));
+		editProduct.setThreshold(1);
+
 		return v;
 	}
 
@@ -167,7 +177,7 @@ public class SpendingFragment extends Fragment {
 
 	private void doSaveAndNew() {
 		if (saveSpending()) {
-			String product = editProduct.getText() + " [ " + editSumBig.getText() + "." + editSumSmall.getText() + " ]";
+			String product = editProduct.getText().toString();
 			editProduct.setText("");
 			editNotes.setText("");
 			editSumBig.setText("");
@@ -240,5 +250,72 @@ public class SpendingFragment extends Fragment {
 			}
 		}
 		return sum;
+	}
+
+	class ProductSearchAdapter extends ArrayAdapter<Product> {
+
+		private int viewResourceId;
+		private final int textViewId;
+		private LayoutInflater layoutInflater;
+
+		@Override
+		public Filter getFilter() {
+			return mFilter;
+		}
+
+		private Filter mFilter = new Filter() {
+
+			@Override
+			public CharSequence convertResultToString(Object resultValue) {
+				Product product = (Product)resultValue;
+				Log.d("m:convertResultToString", product.getName());
+				return product.getName();
+			}
+
+			@Override
+			protected FilterResults performFiltering(CharSequence constraint) {
+				FilterResults results = new FilterResults();
+
+				if (constraint != null) {
+					List<Product> suggestions = dbHelper.searchProductsSuggestions(productDao, constraint.toString(), 5);
+					results.values = suggestions;
+					results.count = suggestions.size();
+				}
+
+				return results;
+			}
+
+			@Override
+			protected void publishResults(CharSequence constraint, FilterResults results) {
+				clear();
+				if (results != null && results.count > 0) {
+					addAll((List<Product>) results.values);
+				}
+				notifyDataSetChanged();
+			}
+		};
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			View view = convertView;
+
+			if (view == null) {
+				view = layoutInflater.inflate(viewResourceId, null);
+			}
+
+			Product product = getItem(position);
+
+			TextView field = (TextView) view.findViewById(textViewId);
+			field.setText(product.getName());
+
+			return view;
+		}
+
+		public ProductSearchAdapter(Context context) {
+			super(context, R.layout.dropdown_list_item);
+			viewResourceId = R.layout.dropdown_list_item;
+			textViewId = android.R.id.text1;
+			layoutInflater = LayoutInflater.from(context);
+		}
 	}
 }

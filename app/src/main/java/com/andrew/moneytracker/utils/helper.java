@@ -8,10 +8,14 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import java.text.Collator;
+
 /**
  * Created by andrew on 07.09.2016.
  */
 public class helper {
+
+	public static Collator collator = Collator.getInstance();
 
 	public static void putLongExtra(Intent intent, String key, Long value) {
 		if (value != null) intent.putExtra(key, value);
