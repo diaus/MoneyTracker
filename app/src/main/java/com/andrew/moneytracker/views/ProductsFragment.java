@@ -17,27 +17,36 @@ import com.andrew.moneytracker.database.Account;
 import com.andrew.moneytracker.database.Product;
 import com.andrew.moneytracker.utils.dbHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by andrew on 07.09.2016.
  */
 public class ProductsFragment extends MainTabFragment {
+
+	SimpleListView mListProducts;
+
 
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_products, container, false);
 
-		SimpleListView listProducts = (SimpleListView) v.findViewById(R.id.products_list);
+		mListProducts = (SimpleListView) v.findViewById(R.id.products_list);
 
-		listProducts.setAdapter(new SimpleListAdapter<>(dbHelper.productsList(productDao()), new IFactory<ISimpleViewHolder>() {
-					  @Override
-					  public ISimpleViewHolder create() {
-						  return new ProductViewHolder();
-					  }
-				  }),
-				  R.layout.account_list_item);
+		updateData();
 
 		return v;
+	}
+
+	void updateData(){
+		mListProducts.setAdapter(new ProductsAdapter(dbHelper.productsList(productDao())), R.layout.account_list_item);
+	}
+
+	@Override
+	public void onTabSelected() {
+		updateData();
 	}
 
 	public class ProductViewHolder implements ISimpleViewHolder<Product> {
@@ -56,4 +65,15 @@ public class ProductsFragment extends MainTabFragment {
 		}
 	}
 
+	class ProductsAdapter extends SimpleListAdapter<Product> {
+
+		public ProductsAdapter(List<Product> products) {
+			super(products, new IFactory<ISimpleViewHolder>() {
+				@Override
+				public ISimpleViewHolder create() {
+					return new ProductViewHolder();
+				}
+			});
+		}
+	}
 }

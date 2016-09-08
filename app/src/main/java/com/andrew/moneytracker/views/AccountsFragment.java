@@ -41,6 +41,11 @@ public class AccountsFragment extends MainTabFragment {
 		return v;
 	}
 
+	@Override
+	public void onTabSelected() {
+		// nothing currently
+	}
+
 	public class AccountViewHolder implements ISimpleViewHolder<Account> {
 		TextView mName;
 		Account mAccount;

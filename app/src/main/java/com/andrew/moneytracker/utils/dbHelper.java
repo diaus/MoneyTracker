@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by andrew on 07.09.2016.
@@ -24,6 +26,15 @@ public class dbHelper {
 
 	public static List<Account> accountsList(AccountDao accountDao) {
 		return accountDao.queryBuilder().orderAsc(AccountDao.Properties.Name).list();
+	}
+
+	public static Map<Long, Account> accountsMap(AccountDao accountDao) {
+		List<Account> accounts = accountDao.queryBuilder().list();
+		Map<Long, Account> map = new HashMap<>();
+		for (Account account : accounts) {
+			map.put(account.getId(), account);
+		}
+		return map;
 	}
 
 	public static List<Product> productsList(ProductDao productDao) {
@@ -92,5 +103,14 @@ public class dbHelper {
 
 	private static void sortProducts(List<Product> products) {
 		Collections.sort(products, productsComparator);
+	}
+
+	public static List<Spending> blotterList(SpendingDao spendingDao) {
+		List<Spending> blotter = spendingDao.queryDeep("ORDER BY T.'DATE' DESC");
+		return blotter;
+	}
+
+	public static void deleteSpending(SpendingDao spendingDao, Long id) {
+		spendingDao.deleteByKey(id);
 	}
 }

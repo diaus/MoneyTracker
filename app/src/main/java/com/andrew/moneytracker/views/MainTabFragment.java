@@ -11,6 +11,8 @@ import com.andrew.moneytracker.database.SpendingDao;
  */
 public abstract class MainTabFragment extends Fragment {
 
+	public abstract void onTabSelected();
+
 	public IMainActivity getActivityMain(){
 		return (IMainActivity) getActivity();
 	}

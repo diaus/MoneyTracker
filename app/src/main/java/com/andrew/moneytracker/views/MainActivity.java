@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
 					case 2: mNavigationView.setCheckedItem(R.id.navigation_item_accounts); break;
 				}
 				mActionBar.setSubtitle(null);
+				getTab(position).onTabSelected();
 			}
 		});
 
@@ -136,6 +137,10 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private MainTabFragment getTab(int position){
+		return (MainTabFragment) mAdapter.instantiateItem(mViewPager, position);
 	}
 
 	@Override

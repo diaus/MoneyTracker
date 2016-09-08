@@ -5,11 +5,9 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -244,13 +242,14 @@ public class SpendingFragment extends Fragment {
 			editSumBig.setText("");
 			editSumSmall.setText("");
 			helper.focusAndShowKeyboard(getContext(), editProduct);
-			Toast.makeText(getContext(), String.format(getString(isCreating ? R.string.product_1s_created : R.string.product_1s_updated), product)
+			Toast.makeText(getContext(), String.format(getString(isCreating ? R.string.spending_1s_created : R.string.spending_1s_updated), product)
 					  , Toast.LENGTH_SHORT).show();
 		}
 	}
 
 	private void doSave() {
 		if (saveSpending()) {
+			getActivity().setResult(Activity.RESULT_OK);
 			getActivity().finish();
 		}
 	}

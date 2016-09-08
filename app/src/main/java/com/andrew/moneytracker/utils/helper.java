@@ -45,9 +45,9 @@ public class helper {
 //	}
 
 	public static void focusAndShowKeyboard(Context context, View view) {
-		if(view.requestFocus()){
-			InputMethodManager imm =(InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.showSoftInput(view,InputMethodManager.SHOW_IMPLICIT);
+		if (view.requestFocus()) {
+			InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
 		}
 	}
 
@@ -63,5 +63,16 @@ public class helper {
 
 	public static String formatShortTime(Date date) {
 		return String.format(Locale.getDefault(), "%1$tH : %1$tM", date);
+	}
+
+	public static String formatBlotterTime(Date date) {
+		return String.format(Locale.getDefault(), "%1$tb %1$td, %1$tH:%1$tM", date);
+	}
+
+	public static String formatSumForBlotter(int sum) {
+		String s = (sum / 100) + ",";
+		int k = sum % 100;
+		if (k < 10) s += "0";
+		return s + k;
 	}
 }

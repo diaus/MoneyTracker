@@ -14,6 +14,8 @@
 	<string name="enter_product_hint">enter product</string>
 	<string name="should_enter_product">You did not enter a product</string>
 	<string name="should_enter_sum">You did not enter sum</string>
-	<string name="product_1s_updated">Product %1$s updated</string>
-	<string name="product_1s_created">Product %1$s created</string>
+	<string name="spending_1s_updated">Spending %1$s updated</string>
+	<string name="spending_1s_created">Spending %1$s created</string>
+	<string name="confirm_delete_spending">Are you sure to delete this record?</string>
+	<string name="confirm_dialog_title">Really?</string>
 </resources>
