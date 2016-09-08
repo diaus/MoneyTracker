@@ -1,6 +1,8 @@
 package com.andrew.moneytracker.views;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -8,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +18,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.andrew.moneytracker.App;
@@ -32,6 +37,8 @@ import com.andrew.moneytracker.database.SpendingDao;
 import com.andrew.moneytracker.utils.dbHelper;
 import com.andrew.moneytracker.utils.helper;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,6 +49,7 @@ public class SpendingFragment extends Fragment {
 	private static final String ARG_ID = "id";
 
 	private static final String SAVED_ACCOUNT_ID = "account_id";
+	private static final String SAVED_DATE = "date";
 
 	private static final int REQUEST_SELECT_ACCOUNT = 1;
 
@@ -56,11 +64,13 @@ public class SpendingFragment extends Fragment {
 
 	Button btnSave, btnCancel, btnSaveAndNew;
 	Button btnAccount;
+	Button btnDate, btnTime;
 	AutoCompleteTextView editProduct;
 	EditText editNotes;
 	EditText editSumBig, editSumSmall;
 
 	Long mAccountId;
+	Date mDate;
 
 	public static SpendingFragment newInstance(Long id) {
 		SpendingFragment fragment = new SpendingFragment();
@@ -90,6 +100,7 @@ public class SpendingFragment extends Fragment {
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		helper.putLongBundle(outState, SAVED_ACCOUNT_ID, mAccountId);
+		outState.putLong(SAVED_DATE, mDate.getTime());
 	}
 
 	@Nullable
@@ -101,6 +112,8 @@ public class SpendingFragment extends Fragment {
 		btnSave = (Button) v.findViewById(R.id.button_save);
 		btnSaveAndNew = (Button) v.findViewById(R.id.button_save_and_new);
 		btnAccount = (Button) v.findViewById(R.id.button_account);
+		btnDate = (Button) v.findViewById(R.id.button_date);
+		btnTime = (Button) v.findViewById(R.id.button_time);
 		editProduct = (AutoCompleteTextView) v.findViewById(R.id.product);
 		editNotes = (EditText) v.findViewById(R.id.notes);
 		editSumBig = (EditText) v.findViewById(R.id.sum_big);
@@ -109,13 +122,16 @@ public class SpendingFragment extends Fragment {
 		Account account = null;
 		if (savedInstanceState != null) {
 			mAccountId = helper.getLongBundle(savedInstanceState, SAVED_ACCOUNT_ID);
+			mDate = new Date(savedInstanceState.getLong(SAVED_DATE));
 		} else {
 			// on first open
 			if (isCreating) {
+				mDate = Calendar.getInstance().getTime();
 				account = accountDao.queryBuilder().limit(1).unique();
 				mAccountId = account != null ? account.getId() : null;
 			} else {
 				Spending spending = spendingDao.load(spendingId);
+				mDate = spending.getDate();
 				mAccountId = spending.getAccountId();
 				editProduct.setText(productDao.load(spending.getProductId()).getName());
 				editNotes.setText(productDao.load(spending.getProductId()).getName());
@@ -165,7 +181,52 @@ public class SpendingFragment extends Fragment {
 		editProduct.setAdapter(new ProductSearchAdapter(getContext()));
 		editProduct.setThreshold(1);
 
+		btnDate.setText(helper.formatShortDate(mDate));
+		btnTime.setText(helper.formatShortTime(mDate));
+
+		btnDate.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				pickDate();
+			}
+		});
+		btnTime.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				pickTime();
+			}
+		});
+
 		return v;
+	}
+
+	private void pickTime() {
+		final Calendar cal = Calendar.getInstance();
+		cal.setTime(mDate);
+		new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+			@Override
+			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+				cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
+				cal.set(Calendar.MINUTE, minute);
+				mDate = cal.getTime();
+				btnTime.setText(helper.formatShortTime(mDate));
+			}
+		}, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), DateFormat.is24HourFormat(getContext())).show();
+	}
+
+	private void pickDate() {
+		final Calendar cal = Calendar.getInstance();
+		cal.setTime(mDate);
+		new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+			@Override
+			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+				cal.set(Calendar.YEAR, year);
+				cal.set(Calendar.MONTH, monthOfYear);
+				cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+				mDate = cal.getTime();
+				btnDate.setText(helper.formatShortDate(mDate));
+			}
+		}, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show();
 	}
 
 	private void doSelectAccount() {
@@ -198,7 +259,7 @@ public class SpendingFragment extends Fragment {
 		if (!validate()) return false;
 		Product product = dbHelper.resolveProduct(productDao, helper.trimEdit(editProduct));
 		editProduct.setText(product.getName());
-		dbHelper.saveSpending(spendingDao, spendingId, product.getId(), mAccountId, getSum(), helper.trimEdit(editNotes));
+		dbHelper.saveSpending(spendingDao, spendingId, mDate, product.getId(), mAccountId, getSum(), helper.trimEdit(editNotes));
 		return true;
 	}
 

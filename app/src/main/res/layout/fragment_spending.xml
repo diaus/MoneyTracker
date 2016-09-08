@@ -50,8 +50,20 @@
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:gravity="right"
 				android:orientation="horizontal">
+
+				<Button
+					android:id="@+id/button_date"
+					tools:text="Sep 1. 2016"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
+
+				<Button
+					android:id="@+id/button_time"
+					tools:text="15:27"
+					android:layout_weight="1"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
 
 				<Button
 					android:id="@+id/button_account"

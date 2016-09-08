@@ -9,6 +9,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import java.text.Collator;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by andrew on 07.09.2016.
@@ -52,5 +55,13 @@ public class helper {
 		String s = edit.getText().toString().trim();
 		edit.setText(s);
 		return s;
+	}
+
+	public static String formatShortDate(Date date) {
+		return String.format(Locale.getDefault(), "%1$tY %1$tb %1$td", date);
+	}
+
+	public static String formatShortTime(Date date) {
+		return String.format(Locale.getDefault(), "%1$tH : %1$tM", date);
 	}
 }

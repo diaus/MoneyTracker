@@ -13,6 +13,7 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,20 +41,20 @@ public class dbHelper {
 		return product;
 	}
 
-	public static Spending createSpending(SpendingDao spendingDao, long productId, long accountId, int sum, String notes) {
-		Spending spending = new Spending(null, productId, accountId, sum, notes);
+	public static Spending createSpending(SpendingDao spendingDao, Date date, long productId, long accountId, int sum, String notes) {
+		Spending spending = new Spending(null, productId, accountId, sum, date, notes);
 		spendingDao.insert(spending);
 		return spending;
 	}
 
-	public static Spending updateSpending(SpendingDao spendingDao, long spendingId, long productId, long accountId, int sum, String notes) {
-		Spending spending = new Spending(spendingId, productId, accountId, sum, notes);
+	public static Spending updateSpending(SpendingDao spendingDao, long spendingId, Date date, long productId, long accountId, int sum, String notes) {
+		Spending spending = new Spending(spendingId, productId, accountId, sum, date, notes);
 		spendingDao.update(spending);
 		return spending;
 	}
 
-	public static Spending saveSpending(SpendingDao spendingDao, Long spendingId, long productId, long accountId, int sum, String notes) {
-		return spendingId == null ? createSpending(spendingDao, productId, accountId, sum, notes) : updateSpending(spendingDao, spendingId, productId, accountId, sum, notes);
+	public static Spending saveSpending(SpendingDao spendingDao, Long spendingId, Date date, long productId, long accountId, int sum, String notes) {
+		return spendingId == null ? createSpending(spendingDao, date, productId, accountId, sum, notes) : updateSpending(spendingDao, spendingId, date, productId, accountId, sum, notes);
 	}
 
 	public static List<Product> searchProductsSuggestions(ProductDao productDao, String filter, int maxCount) {

@@ -5,6 +5,8 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Generated;
 
+import java.util.Date;
+
 /**
  * Created by andrew on 07.09.2016.
  */
@@ -22,14 +24,19 @@ public class Spending {
 	@NotNull
 	private int cash;
 
+	@NotNull
+	private Date date;
+
 	private String notes;
 
-	@Generated(hash = 148746419)
-	public Spending(Long id, long productId, long accountId, int cash, String notes) {
+	@Generated(hash = 297196532)
+	public Spending(Long id, long productId, long accountId, int cash,
+			@NotNull Date date, String notes) {
 		this.id = id;
 		this.productId = productId;
 		this.accountId = accountId;
 		this.cash = cash;
+		this.date = date;
 		this.notes = notes;
 	}
 
@@ -83,5 +90,13 @@ public class Spending {
 
 	public int getCashSmall() {
 		return getCash() % 100;
+	}
+
+	public Date getDate() {
+		return this.date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 }
