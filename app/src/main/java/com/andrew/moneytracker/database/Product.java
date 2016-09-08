@@ -2,6 +2,7 @@ package com.andrew.moneytracker.database;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Index;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Generated;
 
@@ -16,12 +17,18 @@ public class Product {
 	@NotNull
 	private String name;
 
+	@NotNull
+	@Index
+	private String nameNormalized;
+
 	private Long parentId;
 
-	@Generated(hash = 439715334)
-	public Product(Long id, @NotNull String name, Long parentId) {
+	@Generated(hash = 524282247)
+	public Product(Long id, @NotNull String name, @NotNull String nameNormalized,
+			Long parentId) {
 		this.id = id;
 		this.name = name;
+		this.nameNormalized = nameNormalized;
 		this.parentId = parentId;
 	}
 
@@ -51,5 +58,13 @@ public class Product {
 
 	public void setParentId(Long parentId) {
 		this.parentId = parentId;
+	}
+
+	public String getNameNormalized() {
+		return this.nameNormalized;
+	}
+
+	public void setNameNormalized(String nameNormalized) {
+		this.nameNormalized = nameNormalized;
 	}
 }

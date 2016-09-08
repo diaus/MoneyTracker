@@ -1,5 +1,6 @@
 package com.andrew.moneytracker.views;
 
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
 
 		// DATABASE
 		daoSession = ((App) getApplication()).getDaoSession();
+
 		accountDao = daoSession.getAccountDao();
 		productDao = daoSession.getProductDao();
 		spendingDao = daoSession.getSpendingDao();

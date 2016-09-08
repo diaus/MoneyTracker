@@ -9,4 +9,11 @@
 	<string name="button_save_and_new"><![CDATA[Save & New]]></string>
 	<string name="button_cancel_title">Cancel</string>
 	<string name="dialog_select_account_title">Select Account</string>
+	<string name="notes_title">Notes</string>
+	<string name="enter_notes_hint">enter notes</string>
+	<string name="enter_product_hint">enter product</string>
+	<string name="should_enter_product">You did not enter a product</string>
+	<string name="should_enter_sum">You did not enter sum</string>
+	<string name="product_1s_updated">Product %1$s updated</string>
+	<string name="product_1s_created">Product %1$s created</string>
 </resources>

@@ -1,13 +1,19 @@
 package com.andrew.moneytracker.views;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.andrew.moneytracker.R;
+
+import java.text.Collator;
+import java.text.Normalizer;
+import java.util.Locale;
 
 /**
  * Created by andrew on 07.09.2016.
