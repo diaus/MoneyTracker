@@ -6,10 +6,10 @@
 			android:checked="true"
 			android:title="@string/tab_title_blotter" />
 		<item
-			android:id="@+id/navigation_item_accounts"
-			android:title="@string/tab_title_accounts" />
-		<item
 			android:id="@+id/navigation_item_products"
 			android:title="@string/tab_title_products" />
+		<item
+			android:id="@+id/navigation_item_accounts"
+			android:title="@string/tab_title_accounts" />
 	</group>
 </menu>

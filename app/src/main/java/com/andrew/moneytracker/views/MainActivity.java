@@ -63,9 +63,9 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
 					case 0:
 						return new BlotterFragment();
 					case 1:
-						return new AccountsFragment();
-					case 2:
 						return new ProductsFragment();
+					case 2:
+						return new AccountsFragment();
 				}
 				return null;
 			}
@@ -81,9 +81,9 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
 					case 0:
 						return getString(R.string.tab_title_blotter);
 					case 1:
-						return getString(R.string.tab_title_accounts);
-					case 2:
 						return getString(R.string.tab_title_products);
+					case 2:
+						return getString(R.string.tab_title_accounts);
 				}
 				return null;
 			}
@@ -102,13 +102,26 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
 				int tabIndex;
 				switch (item.getItemId()){
 					case R.id.navigation_item_blotter: tabIndex = 0; break;
-					case R.id.navigation_item_accounts: tabIndex = 1; break;
-					case R.id.navigation_item_products: tabIndex = 2; break;
+					case R.id.navigation_item_products: tabIndex = 1; break;
+					case R.id.navigation_item_accounts: tabIndex = 2; break;
 					default: return false;
 				}
 				mDrawerLayout.closeDrawers();
 				mViewPager.setCurrentItem(tabIndex);
 				return true;
+			}
+		});
+
+		mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+			@Override
+			public void onPageSelected(int position) {
+				Log.d(TAG, "tab selected " + position);
+				switch (position){
+					case 0: mNavigationView.setCheckedItem(R.id.navigation_item_blotter); break;
+					case 1: mNavigationView.setCheckedItem(R.id.navigation_item_products); break;
+					case 2: mNavigationView.setCheckedItem(R.id.navigation_item_accounts); break;
+				}
+				mActionBar.setSubtitle(null);
 			}
 		});
 
